@@ -1,6 +1,8 @@
 # Zoo Management System
 Lab Week 8 &amp; 9 🐘🦒🐅
 
+![image](https://github.com/user-attachments/assets/a7c7015f-e95f-4957-b62a-0519ef5fce93)
+
 A management system for a zoo containing three types of care facilities with different care capacities (**Basic**, **Advanced**, and **Intensive**). The zoo will ensure that animals recieve timely care and attention through this establishment. To manage...
 
 ...animals effectively, you will implement a combination of hash tables and binary search trees (BST)

@@ -84,3 +84,10 @@ Your BST should:
     - Hash Table with collision managment (Make sure to implement in code)
     - BST capable of managing animal care needs (Make sure to implement in code)
     - Demo
+
+---------------------------------------------------------------------------------------------------------
+
+## Cited Sources
+
+Images:
+- https://www.lovelycoding.org/zoo-management-system/ 

@@ -42,3 +42,33 @@ Your BST should:
 
 - Efficiently retrieve animals that urgently need attention within a care level range.
 
+---------------------------------------------------------------------------------------------------------
+
+Care Facilities:
+Basic Care: Can handle animals with care levels 1-3.
+
+Advanced: Handles animals with care levels 4-7.
+
+Intensive: Handles animals with care levels 8-10.
+
+
+Tasks
+Define Data Structures: Define your hash table and tree node classes clearly.
+
+Implement Hash Table Operations
+
+Implement Tree Operations
+
+Testing:
+
+Populate your structures with at least 10 sample animals.
+
+Demonstrate insertion, deletion, periodic care-level increases, and efficient retrieval of animals based on facility availability.
+
+Deliverables
+Your Python implementation (.py file).
+
+Hash Table with collision managment
+
+BST capable of managing animal care needs
+Demo

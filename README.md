@@ -5,7 +5,11 @@ A management system for a zoo containing three types of care facilities with dif
 
 ...animals effectively, you will implement a combination of hash tables and binary search trees (BST)
 
-- Efficient system, maximizing Big O notation and time complexity 
+- Efficient system, maximizing Big O notation and time complexity
+- Differentiate care levels
+- Implement materials learned in class, internet (cite sources), or from lecture slides
+
+------------------------------------------------------------------------------------------------------------
 
 ## Objectives
 - Demonstrate proficiency in implementing hash tables for rapid animal lookups.

@@ -3,6 +3,8 @@ Lab Week 8 &amp; 9 🐘🦒🐅
 
 A management system for a zoo containing three types of care facilities with different care capacities (**Basic**, **Advanced**, and **Intensive**). The zoo will ensure that animals recieve timely care and attention through this establishment. To manage...
 
+- Efficient system, maximizing Big O notation and time complexity 
+
 ## Objectives
 - Demonstrate proficiency in implementing hash tables for rapid animal lookups.
 
@@ -51,6 +53,7 @@ Advanced: Handles animals with care levels 4-7.
 
 Intensive: Handles animals with care levels 8-10.
 
+---------------------------------------------------------------------------------------------------------
 
 Tasks
 Define Data Structures: Define your hash table and tree node classes clearly.
@@ -64,6 +67,8 @@ Testing:
 Populate your structures with at least 10 sample animals.
 
 Demonstrate insertion, deletion, periodic care-level increases, and efficient retrieval of animals based on facility availability.
+
+---------------------------------------------------------------------------------------------------------
 
 Deliverables
 Your Python implementation (.py file).

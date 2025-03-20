@@ -11,6 +11,8 @@ A management system for a zoo containing three types of care facilities with dif
 - Differentiate care levels, address collisions
 - Implement materials learned in class, internet (cite sources), or from lecture slides
 
+![image](https://github.com/user-attachments/assets/5f1b60e4-a522-4e00-a5ad-cb3d567063e0)
+
 ------------------------------------------------------------------------------------------------------------
 
 ## Objectives
@@ -92,4 +94,5 @@ Your BST should:
 ## Cited Sources
 
 Images:
-- https://www.lovelycoding.org/zoo-management-system/ 
+- https://www.lovelycoding.org/zoo-management-system/
+- https://www.vecteezy.com/vector-art/362602-cute-animals-in-the-zoo

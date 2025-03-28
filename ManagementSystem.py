@@ -1,2 +1,4 @@
+import heapq
+
 class Manage:
   

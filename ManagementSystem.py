@@ -200,3 +200,28 @@ class HashTableLL:
             prev = current
             current = current.next
         return None
+
+# ===========================================================
+
+'''
+Part 1: Hash Table (Animal Lookup)
+'''
+
+# ===========================================================
+
+'''
+Part 2: Binary Search Tree (Care Priority Management)
+'''
+
+'''
+Care Facilities:
+Basic Care: Can handle animals with care levels 1-3.
+
+Advanced: Handles animals with care levels 4-7.
+
+Intensive: Handles animals with care levels 8-10.
+'''
+
+# ===========================================================
+
+

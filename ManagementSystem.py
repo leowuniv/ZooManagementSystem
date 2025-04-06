@@ -205,12 +205,26 @@ class HashTableLL:
 
 '''
 Part 1: Hash Table (Animal Lookup)
+
+Stores animals by unique names
+
+Include:
+- Insertion
+- Deletion
+- Searching by name
 '''
+
+# Name (string, unique identifier)
+# Species (e.g., lion, penguin, elephant, etc.)
+# Care Level (integer, initially set from 1-10)
 
 # ===========================================================
 
 '''
 Part 2: Binary Search Tree (Care Priority Management)
+
+Ensure that animals are with greater values are handles first.
+Ex. 10 > 8, animals with a 10 priority care will have priority in the intensive care before a level 8 animal.
 '''
 
 '''
@@ -221,6 +235,12 @@ Advanced: Handles animals with care levels 4-7.
 
 Intensive: Handles animals with care levels 8-10.
 '''
+
+# Each node will store:
+# Care Level (key)
+# List of animals sharing the same care level
+
+# Important Implementation: Animals' care levels increase over time if they are not attended to, simulating the urgency of care.
 
 # ===========================================================
 

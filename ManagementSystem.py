@@ -1,6 +1,5 @@
-import heapq
-
-class Manage:
+# import heapq
+# class Manage:
   
 # **CARE FACILITIES** cannot be used by multiple animals at the same time (can implement as boolean value) --> not a class some data structure
 
@@ -226,6 +225,15 @@ Include:
 # Species (e.g., lion, penguin, elephant, etc.)
 # Care Level (integer, initially set from 1-10)
 
+class animalLookup:
+    def __init__(self, name, species, careLevel):
+        self.name = name
+        self.species = species
+        self.careLevel = careLevel
+
+    def __str__(self):
+        return f"Name: {self.name}, Species: {self.species}, Care Level: {self.careLevel}"
+
 # ===========================================================
 
 '''
@@ -250,10 +258,12 @@ Intensive: Handles animals with care levels 8-10.
 
 # Important Implementation: Animals' care levels increase over time if they are not attended to, simulating the urgency of care.
 
+class Manage:
+
 # ===========================================================
 
-# Testing here
-def main():
+# Testing here (part 1)
+def main1():
     lookup = HashTable()
     t1 = animalLookup("a", "Lion", 6)
     t2 = animalLookup("b", "Penguin", 2)
@@ -279,4 +289,4 @@ def main():
     print(lookup.get("a"))
   
 if __name__ == "__main__":
-  main()
+  main1() # part 1

@@ -255,6 +255,6 @@ Intensive: Handles animals with care levels 8-10.
 # Testing here
 def main():
   
-if __name__ = "__main__":
+if __name__ == "__main__":
   main()
 

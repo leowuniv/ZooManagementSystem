@@ -254,7 +254,29 @@ Intensive: Handles animals with care levels 8-10.
 
 # Testing here
 def main():
+    lookup = HashTable()
+    t1 = animalLookup("a", "Lion", 6)
+    t2 = animalLookup("b", "Penguin", 2)
+    t3 = animalLookup("c", "Elephant", 8)
+    t4 = animalLookup("d", "Eagle", 10)
+    t5 = animalLookup("e", "Ants", 1)
+    
+    # add and search testing
+    lookup.insert(t1.name, t1)
+    lookup.insert(t2.name, t2)
+    lookup.insert(t3.name, t3)
+    lookup.insert(t4.name, t4)
+    lookup.insert(t5.name, t5)
+    search1 = lookup.get("a")
+    print(search1)
+    search2 = lookup.get("b")
+    print(search2)
+    search3 = lookup.get("c")
+    print(search3)
+    
+    # delete test
+    lookup.delete("a")
+    print(lookup.get("a"))
   
 if __name__ == "__main__":
   main()
-

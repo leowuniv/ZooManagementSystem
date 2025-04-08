@@ -139,7 +139,7 @@ class HashTable:
                 poppedValue = self.table[index]
                 self.table[index] = self.deletedMarker
                 return poppedValue
-            index = (index + 1) % self.size # address linear probing
+            index = (index + 1) % self.size # address linear probing (open addressing)
             count += 1
             #index = (index + count + count**2) % self.size
         return None

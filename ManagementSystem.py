@@ -90,6 +90,10 @@ class BinarySearchTree:
 
 # ===========================================
 
+'''
+Hash Table
+'''
+
 class HashTable:
     def __init__(self, size=10):
         self.size = size 
@@ -142,6 +146,10 @@ class HashTable:
 
 # ================================
 
+'''
+Hash Table Linked List
+'''
+'''
 class Node:
     def __init__(self, key, value):
         self.key = key
@@ -200,7 +208,7 @@ class HashTableLL:
             prev = current
             current = current.next
         return None
-
+'''
 # ===========================================================
 
 '''

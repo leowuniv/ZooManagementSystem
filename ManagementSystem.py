@@ -288,5 +288,15 @@ def main1():
     lookup.delete("a")
     print(lookup.get("a"))
   
+'''
+Testing:
+
+Populate your structures with at least 10 sample animals.
+
+Demonstrate insertion, deletion, periodic care-level increases, and efficient retrieval of animals based on facility availability.
+'''
+def main2():
+  
 if __name__ == "__main__":
   main1() # part 1
+  main2() # part 2

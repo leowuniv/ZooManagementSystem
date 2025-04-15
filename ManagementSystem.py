@@ -93,9 +93,19 @@ class BinarySearchTree:
         self.inorderTrav(node.left) # travel left if possible
         print(node.current) # print the current data
         self.inorderTrav(node.right) # travel right if possible
-
+        
     # Preorder traversal
+    def preorderTrav(self, node)
+      if node:
+        print(node.data) # print current data
+        self.preorderTrav(node.left) # travel left if possible
+        self.preorderTrav(node.right) # travel right if possible
 
+    def postorderTrav(self, node)
+      if node:
+        self.postorderTrav(node.left) # travel left if possible
+        self.postorderTrav(node.right) # travel right if possible
+        print(node.data) # print current data
 # ===========================================
 
 '''

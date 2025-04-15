@@ -87,6 +87,15 @@ class BinarySearchTree:
             current = current.left
         return current
 
+    # Inorder traversal
+    def inorderTrav(self, node):
+      if node:
+        self.inorderTrav(node.left) # travel left if possible
+        print(node.current) # print the current data
+        self.inorderTrav(node.right) # travel right if possible
+
+    # Preorder traversal
+
 # ===========================================
 
 '''
@@ -142,7 +151,7 @@ class HashTable:
             count += 1
             #index = (index + count + count**2) % self.size
         return None
-
+  
 # ================================
 
 '''

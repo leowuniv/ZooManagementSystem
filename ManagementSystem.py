@@ -101,6 +101,7 @@ class BinarySearchTree:
         self.preorderTrav(node.left) # travel left if possible
         self.preorderTrav(node.right) # travel right if possible
 
+    # Postorder traversal
     def postorderTrav(self, node)
       if node:
         self.postorderTrav(node.left) # travel left if possible

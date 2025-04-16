@@ -1,3 +1,20 @@
+from typing import Any, Generator
+
+class Animal:
+  def __init__(self, name: str, species:str, care:int) -> None:
+    self.name:str = name 
+    self.species:str = species 
+    # make sure care is between 1-10
+    care = 10 if care > 10 else care
+    care = 1 if care < 1 else care
+    self.care:int = care 
+
+  def __getitem__(self, key) -> str|int:
+    return getattr(self, key)
+  
+  def __setitem__(self, key, val):
+    return setattr(self, key, val)
+
 class Node:
   def __init__(self, data):
     self.data = data
@@ -132,3 +149,22 @@ def delete(self, key):
     index = (index + 1) % self.size
     count += 1
   return None
+
+if __name__ == "__main__":
+  test1 = Animal('Bob', 'Tiger', 1)
+  test2 = Animal('Jane', 'Lion', -1)
+  management = BinarySearchTree('Wasd')
+  management.insert(test1['name'])
+  management.insert(test2['name'])
+  management.insert('a')
+  management.insert('g')
+  management.insert('d')
+  management.insert('f')
+  management.insert('c')
+  management.insert('e')
+  management.insert('b')
+  for data in management.inorder():
+    print(data)
+  management.delete(test1['name'])
+  for data in management.inorder():
+    print(data)

@@ -1,4 +1,88 @@
-class Manage:
+class Node:
+  def __init__(self, data):
+    self.data = data
+    self.left: Node|None = None
+    self.right: Node|None = None
+
+class BinarySearchTree:
+  def __init__(self, root: Any|None = None) -> None:
+    if type(root) is not None and type(root) is not Node:
+      root = Node(root)
+    self.root: Node|None = root
+
+  def search(self, target) -> Any|None:
+    return self._search(self.root, target)
+
+  def _search(self, current, target) -> Any|None:
+    # does the current exist, if not then return None
+    if current is None:
+      return None
+    
+    if target == current.data:
+      return current
+    elif target < current.data:
+      self._search(current.left, target)
+    else:
+      self._search(current.right, target)
+
+  def insert(self, data) -> None:
+    self._insert(self.root, data)
+    
+  def _insert(self, current, data) -> Any|None:
+    # base case: create node at this location if empty 
+    if current is None:
+      return Node(data)
+    # if not, navigate to correct subtree
+    elif data < current.data:
+      current.left = self._insert(current.left, data)
+    elif data > current.data:
+      current.right = self._insert(current.right, data)
+    return current
+  
+  def delete(self, data):
+    return self._delete(self.root, data)
+
+  def _delete(self, current, data):
+    # base case
+    if current is None:
+        return 
+    
+    # If key to be searched is in a subtree
+    elif data < current.data:
+        current.left = self._delete(current.left, data)
+    elif data > current.data:
+        current.right = self._delete(current.right, data)
+        
+    else:
+      # If root matches with the given key
+
+      # Cases when root has 0 children or 
+      # only right child
+      if current.left is None:
+        return current.right
+      # When root has only left child
+      if current.right is None:
+        return current.left
+
+      # When both children are present, find inorder successor (leaf of right subtree)
+      temp = current.right
+      while temp.left is not None:
+        temp = temp.left
+      current.data = temp.data
+      # after moving inorder successor here, delete old one
+      current.right = self._delete(current.right, temp.data)
+        
+    return current.data
+  
+  def inorder(self) -> Generator[Any]:
+    yield from self._inorder(self.root)
+
+  def _inorder(self, current) -> Generator[Any]:
+    if current:
+      # instead of just printing, allow for them to yield recursively
+      yield from self._inorder(current.left)
+      yield current.data
+      yield from self._inorder(current.right)
 
 class HashTable:
   def __init__(self, size=10):

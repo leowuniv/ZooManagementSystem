@@ -113,6 +113,17 @@ class HashTable:
   def __setitem__(self, key, value):
     return self.insert(key, value)
 
+  def __str__(self):
+    output = "{"
+    for item in self.table:
+      if item is not None and item != self.deletedMarker:
+        output += f" {item[0]}: {item[1]},"
+    
+    if len(output) > 1:
+      output = output[:-1]
+    output += " }"
+    return output
+
   def hashFunction(self, key):
     return abs(hash(key)) % self.size
 
@@ -174,3 +185,8 @@ if __name__ == "__main__":
   management.delete(test1['name'])
   for data in management.inorder():
     print(data)
+
+  testTable =  HashTable()
+  testTable[test1['name']] = test1
+  testTable[test2['name']] = test2
+  print(testTable)

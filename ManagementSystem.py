@@ -226,7 +226,11 @@ class CareManagement:
     for animal in self.animals.inorder():
       animal.care += 1
 
-  def getAtLevel(self, care: int) -> Generator[Animal]:
+  def decreaseCareLevel(self):
+    for animal in self.animals.inorder():
+      animal.care -= 1
+
+  def getAtLevel(self, care: int) -> Generator[None, Animal]:
     current = self.animals.search(care) 
     if not current:
       yield None
@@ -235,6 +239,36 @@ class CareManagement:
       if animal.care != care:
         break
       yield animal
+  
+class CareFacility(CareManagement):
+  def __init__(self, minCare:int, maxCare:int) -> None:
+    super().__init__()
+    self.MIN_CARE = minCare
+    self.MAX_CARE = maxCare
+
+  def intakeAnimal(self, animal:Animal) -> bool:
+    if self.MIN_CARE <= animal.care <= self.MAX_CARE:
+      self.animals.insert(animal)
+      return True
+    return False
+
+  def dischargeAnimals(self) -> Generator[None, Animal]:
+    """ Pop animals below minimum care level to be handled elsewhere."""
+    # check first lowest animal exists
+    currentAnimal = self.animals.inorder()
+    if currentAnimal and currentAnimal >= self.MIN_CARE:
+      # if lowest care animal is greater than or equal to min care, do not discharge
+      return None
+    
+    # if current animal is less than min care level, pop inorder until element is >= min care
+    # pop first one if so
+    yield self.animals.delete(currentAnimal)
+    for animal in self.animals.inorder():
+      if animal.care >= self.MIN_CARE:
+        break
+      yield self.animals.delete(currentAnimal)
+      
+
 
 
 if __name__ == "__main__":

@@ -226,17 +226,15 @@ class CareManagement:
     for animal in self.animals.inorder():
       animal.care += 1
 
-  def getAtLevel(self, care: int) -> list[Animal]:
-    animals = []
+  def getAtLevel(self, care: int) -> Generator[Animal]:
     current = self.animals.search(care) 
     if not current:
-      return animals
+      yield None
     
     for animal in self.animals._inorder(current):
       if animal.care != care:
         break
-      animals.append(animal)
-    return animals
+      yield animal
 
 
 if __name__ == "__main__":

@@ -94,10 +94,11 @@ class BinarySearchTree:
       current.right = self._insert(current.right, data)
     return current
   
-  def delete(self, data):
-    return self._delete(self.root, data)
+  def delete(self, data) -> None:
+    if self.root:
+      self.root = self._delete(self.root, data)
 
-  def _delete(self, current, data):
+  def _delete(self, current, data) -> Node|None:
     # base case
     if current is None:
         return 
@@ -109,8 +110,6 @@ class BinarySearchTree:
         current.right = self._delete(current.right, data)
         
     else:
-      # If root matches with the given key
-
       # Cases when root has 0 children or 
       # only right child
       if current.left is None:
@@ -127,7 +126,7 @@ class BinarySearchTree:
       # after moving inorder successor here, delete old one
       current.right = self._delete(current.right, temp.data)
         
-    return current.data
+    return current
   
   def inorder(self) -> Generator[Any]:
     yield from self._inorder(self.root)
@@ -239,6 +238,39 @@ class CareManagement:
       if animal.care != care:
         break
       yield animal
+
+  def removeAnimal(self, animal:Animal) -> None:
+    # redefine delete so we can make sure we delete the correct object since we are now doing comparisons with care level by default
+    if self.animals.root:
+      self.animals.root = self._removeAnimal(self.animals.root, animal)
+
+  def _removeAnimal(self, current, animal):
+    """ Specfically compare by name in order to remove animal"""
+    if current is None:
+        return 
+    
+    if current.data['name'] == animal['name']:
+      # Cases when root has 0 children or right
+      if current.left is None:
+        return current.right
+      # When root has only left child
+      if current.right is None:
+        return current.left
+
+      # When both children are present, find inorder successor (leaf of right subtree)
+      temp = current.right
+      while temp.left is not None:
+        temp = temp.left
+      current.data = temp.data
+      # after moving inorder successor here, delete old one
+      current.right = self._removeAnimal(current.right, temp.data)
+    
+    elif animal <= current.data:
+        current.left = self._removeAnimal(current.left, animal)
+    elif animal > current.data:
+        current.right = self._removeAnimal(current.right, animal)
+        
+    return current
   
 class CareFacility(CareManagement):
   def __init__(self, minCare:int, maxCare:int) -> None:
@@ -254,20 +286,12 @@ class CareFacility(CareManagement):
 
   def dischargeAnimals(self) -> Generator[None, Animal]:
     """ Pop animals below minimum care level to be handled elsewhere."""
-    # TODO clean this up
-    # check first lowest animal exists
-    currentAnimal = self.animals.inorder()
-    if currentAnimal and currentAnimal >= self.MIN_CARE:
-      # if lowest care animal is greater than or equal to min care, do not discharge
-      return None
-    
-    # if current animal is less than min care level, pop inorder until element is >= min care
-    # pop first one if so
-    yield self.animals.delete(currentAnimal)
     for animal in self.animals.inorder():
       if animal.care >= self.MIN_CARE:
-        break
-      yield self.animals.delete(currentAnimal)
+        return None
+      # if current animal is less than min care level, pop inorder until element is >= min care
+      self.removeAnimal(animal)
+      yield animal
       
   def escalateAnimals(self) -> Generator[None, Animal]:
     """For any animals that have too high of a care level for this facility, pop them from tree to be used elsewhere"""
@@ -294,6 +318,7 @@ if __name__ == "__main__":
   for data in management.inorder():
     print(data)
   management.delete(test1['name'])
+  management.delete('Wasd')
   for data in management.inorder():
     print(data)
 

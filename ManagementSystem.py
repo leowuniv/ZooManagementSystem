@@ -19,22 +19,34 @@ class Animal:
   def __setitem__(self, key, value):
     return setattr(self, key, value)
   
-  def __eq__(self, value: object) -> bool:
+  def __eq__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care == value
     return self.care == value.care
   
-  def __ne__(self, value: object) -> bool:
+  def __ne__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care != value
     return self.care != value.care
   
-  def __lt__(self, value: object) -> bool:
+  def __lt__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care < value
     return self.care < value.care
   
-  def __gt__(self, value: object) -> bool:
+  def __gt__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care > value
     return self.care > value.care
   
-  def __le__(self, value: object) -> bool:
+  def __le__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care <= value
     return self.care <= value.care
   
-  def __ge__(self, value: object) -> bool:
+  def __ge__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care >= value
     return self.care >= value.care
 
 class Node:
@@ -195,8 +207,6 @@ class HashTable:
 
 class CareManagement:
   def __init__(self) -> None:
-    self.MIN_CARE: int = 0
-    self.MAX_CARE: int = 0
     self.animals = BinarySearchTree()
 
   def __str__(self) -> str:
@@ -216,9 +226,17 @@ class CareManagement:
     for animal in self.animals.inorder():
       animal.care += 1
 
-  def getAtLevel(self, care: int):
+  def getAtLevel(self, care: int) -> list[Animal]:
     animals = []
     current = self.animals.search(care) 
+    if not current:
+      return animals
+    
+    for animal in self.animals._inorder(current):
+      if animal.care != care:
+        break
+      animals.append(animal)
+    return animals
 
 
 if __name__ == "__main__":
@@ -256,3 +274,4 @@ if __name__ == "__main__":
   testManagement.insert(test5)
   testManagement.insert(test6)
   print(testManagement)
+  print(testManagement.getAtLevel(1))

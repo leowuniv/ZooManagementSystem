@@ -1,5 +1,5 @@
 from typing import Any, Generator
-
+#https://docs.python.org/3/library/typing.html
 
 class Animal:
   def __init__(self, name: str, species:str, care:int) -> None:

@@ -19,3 +19,12 @@ if __name__ == "__main__":
   basic_care.decreaseCareLevel()
   for animal in basic_care.dischargeAnimals():
     print(animal)
+
+  a1.care = 1
+  a2.care = 2
+  basic_care.intakeAnimal(a1)
+  basic_care.intakeAnimal(a2)
+  basic_care.increaseCareLevel()
+  basic_care.increaseCareLevel()
+  for animal in basic_care.escalateAnimals():
+    print(animal)

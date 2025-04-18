@@ -137,6 +137,16 @@ class BinarySearchTree:
       yield from self._inorder(current.left)
       yield current.data
       yield from self._inorder(current.right)
+  
+  def postorder(self) -> Generator[Any]:
+    yield from self._postorder(self.root)
+
+  def _postorder(self, current) -> Generator[Any]:
+    if current:
+      # instead of just printing, allow for them to yield recursively
+      yield from self._postorder(current.left)
+      yield from self._postorder(current.right)
+      yield current.data
 
 class HashTable:
   def __init__(self, size=10):
@@ -295,8 +305,13 @@ class CareFacility(CareManagement):
       
   def escalateAnimals(self) -> Generator[None, Animal]:
     """For any animals that have too high of a care level for this facility, pop them from tree to be used elsewhere"""
-    pass
-
+    # traverse backwards with postorder
+    for animal in self.animals.postorder():
+      if animal.care <= self.MAX_CARE:
+        return None
+      # if current animal is less than min care level, pop inorder until element is >= min care
+      self.removeAnimal(animal)
+      yield animal
 
 if __name__ == "__main__":
   test1 = Animal('Bob', 'Tiger', 1)

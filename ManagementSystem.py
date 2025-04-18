@@ -12,8 +12,26 @@ class Animal:
   def __getitem__(self, key) -> str|int:
     return getattr(self, key)
   
-  def __setitem__(self, key, val):
-    return setattr(self, key, val)
+  def __setitem__(self, key, value):
+    return setattr(self, key, value)
+  
+  def __eq__(self, value: object) -> bool:
+    return self.care == value.care
+  
+  def __ne__(self, value: object) -> bool:
+    return self.care != value.care
+  
+  def __lt__(self, value: object) -> bool:
+    return self.care < value.care
+  
+  def __gt__(self, value: object) -> bool:
+    return self.care > value.care
+  
+  def __le__(self, value: object) -> bool:
+    return self.care <= value.care
+  
+  def __ge__(self, value: object) -> bool:
+    return self.care >= value.care
 
 class Node:
   def __init__(self, data):

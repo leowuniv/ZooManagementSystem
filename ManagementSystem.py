@@ -254,6 +254,7 @@ class CareFacility(CareManagement):
 
   def dischargeAnimals(self) -> Generator[None, Animal]:
     """ Pop animals below minimum care level to be handled elsewhere."""
+    # TODO clean this up
     # check first lowest animal exists
     currentAnimal = self.animals.inorder()
     if currentAnimal and currentAnimal >= self.MIN_CARE:
@@ -268,7 +269,9 @@ class CareFacility(CareManagement):
         break
       yield self.animals.delete(currentAnimal)
       
-
+  def escalateAnimals(self) -> Generator[None, Animal]:
+    """For any animals that have too high of a care level for this facility, pop them from tree to be used elsewhere"""
+    pass
 
 
 if __name__ == "__main__":

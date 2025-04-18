@@ -1,5 +1,6 @@
 from typing import Any, Generator
 
+
 class Animal:
   def __init__(self, name: str, species:str, care:int) -> None:
     self.name:str = name 
@@ -8,6 +9,9 @@ class Animal:
     care = 10 if care > 10 else care
     care = 1 if care < 1 else care
     self.care:int = care 
+
+  def __str__(self) -> str:
+    return f"{self.name}: ({self.species}), Care - {self.care}"
 
   def __getitem__(self, key) -> str|int:
     return getattr(self, key)
@@ -41,7 +45,7 @@ class Node:
 
 class BinarySearchTree:
   def __init__(self, root: Any|None = None) -> None:
-    if type(root) is not None and type(root) is not Node:
+    if (root is not None) and (type(root) is not Node):
       root = Node(root)
     self.root: Node|None = root
 
@@ -61,14 +65,18 @@ class BinarySearchTree:
       self._search(current.right, target)
 
   def insert(self, data) -> None:
-    self._insert(self.root, data)
+    # if root was not initialized with a value, handle here
+    if self.root is None:
+      self.root = self._insert(self.root, data)
+      return 
+    return self._insert(self.root, data)
     
   def _insert(self, current, data) -> Any|None:
     # base case: create node at this location if empty 
     if current is None:
       return Node(data)
     # if not, navigate to correct subtree
-    elif data < current.data:
+    elif data <= current.data:
       current.left = self._insert(current.left, data)
     elif data > current.data:
       current.right = self._insert(current.right, data)
@@ -185,9 +193,41 @@ class HashTable:
       count += 1
     return None
 
+class CareManagement:
+  def __init__(self) -> None:
+    self.MIN_CARE: int = 0
+    self.MAX_CARE: int = 0
+    self.animals = BinarySearchTree()
+
+  def __str__(self) -> str:
+    output = "Inorder:\n"
+    for animal in self.animals.inorder():
+      output += str(animal) + " -> "
+    if len(output) > 10:
+      return output[:-4]
+    return output + " None"
+
+  def insert(self, animal: Animal):
+    if type(animal) is Animal:
+      return self.animals.insert(animal)
+    print(f"Cannot insert: not an animal ({animal})")
+
+  def increaseCareLevel(self):
+    for animal in self.animals.inorder():
+      animal.care += 1
+
+  def getAtLevel(self, care: int):
+    animals = []
+    current = self.animals.search(care) 
+
+
 if __name__ == "__main__":
   test1 = Animal('Bob', 'Tiger', 1)
   test2 = Animal('Jane', 'Lion', -1)
+  test3 = Animal('John', 'Weasel', 3)
+  test4 = Animal('Jill', 'Mink', 11)
+  test5 = Animal('Jack', 'Ermine', 6)
+  test6 = Animal('Jean', 'Tanuki', 11)
   management = BinarySearchTree('Wasd')
   management.insert(test1['name'])
   management.insert(test2['name'])
@@ -208,3 +248,11 @@ if __name__ == "__main__":
   testTable[test1['name']] = test1
   testTable[test2['name']] = test2
   print(testTable)
+  testManagement = CareManagement()
+  testManagement.insert(test1)
+  testManagement.insert(test2)
+  testManagement.insert(test3)
+  testManagement.insert(test4)
+  testManagement.insert(test5)
+  testManagement.insert(test6)
+  print(testManagement)

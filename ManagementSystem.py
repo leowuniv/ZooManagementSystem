@@ -322,6 +322,11 @@ def main1():
   t3 = Animal("c", "Elephant", 8)
   t4 = Animal("d", "Eagle", 10)
   t5 = Animal("e", "Ants", 1)
+  t6 = Animal("f", "Panther", 3)
+  t7 = Animal("g", "Fox", 4)
+  t8 = Animal("h", "Salmon", 5)
+  t9 = Animal("i", "Emu", 7)
+  t10 = Animal("j", "Crab", 9)
   
   # add and search testing
   lookup.insert(t1.name, t1)
@@ -329,6 +334,11 @@ def main1():
   lookup.insert(t3.name, t3)
   lookup.insert(t4.name, t4)
   lookup.insert(t5.name, t5)
+  lookup.insert(t6.name, t6)
+  lookup.insert(t7.name, t7)
+  lookup.insert(t8.name, t8)
+  lookup.insert(t9.name, t9)
+  lookup.insert(t10.name, t10)
   print("Get a:")
   search1 = lookup.get("a")
   print(search1)
@@ -358,7 +368,11 @@ def main2():
   a3 = Animal('John', 'Weasel', 3)
   a4 = Animal('Jill', 'Mink', 11)
   a5 = Animal('Jack', 'Ermine', 6)
-  a6 = Animal('Jean', 'Tanuki', 11)
+  a6 = Animal('Jean', 'Tanuki', 9)
+  a7 = Animal('Jacque', 'Tasmanian Devil', 7)
+  a8 = Animal('Janette', 'Hamster', 2)
+  a9 = Animal('Jacob', 'Ginea Pig', 4)
+  a10 = Animal('Jess', 'Tanuki', 5)
   # create 8 more animals "Populate your structures with at least 10 sample animals."
   basic_care = CareFacility(1, 3)
   advanced_care = CareFacility(4, 7)
@@ -381,7 +395,16 @@ def main2():
   basic_care.increaseCareLevel()
   print("Animals needing escalated care:")
   for animal in basic_care.escalateAnimals():
-    print(animal)
+    advanced_care.intakeAnimal(animal)
+  print(advanced_care)
+  intensive_care.intakeAnimal(a4)
+  intensive_care.intakeAnimal(a5)
+  intensive_care.intakeAnimal(a6)
+  intensive_care.intakeAnimal(a7)
+  intensive_care.intakeAnimal(a8)
+  intensive_care.intakeAnimal(a9)
+  intensive_care.intakeAnimal(a10)
+  print(intensive_care)
 
 
 if __name__ == "__main__":

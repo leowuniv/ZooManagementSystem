@@ -308,8 +308,8 @@ class CareFacility(CareManagement):
     # traverse backwards with postorder
     for animal in self.animals.postorder():
       if animal.care <= self.MAX_CARE:
-        return None
-      # if current animal is less than min care level, pop inorder until element is >= min care
+        continue
+      # if current animal is less than min care level, pop postorder until element is >= min care
       self.removeAnimal(animal)
       yield animal
 

@@ -315,6 +315,7 @@ class CareFacility(CareManagement):
 
 # Testing here (part 1)
 def main1():
+  print("Starting main1:\n")
   lookup = HashTable()
   t1 = Animal("a", "Lion", 6)
   t2 = Animal("b", "Penguin", 2)
@@ -328,13 +329,17 @@ def main1():
   lookup.insert(t3.name, t3)
   lookup.insert(t4.name, t4)
   lookup.insert(t5.name, t5)
+  print("Get a:")
   search1 = lookup.get("a")
   print(search1)
+  print("Get b:")
   search2 = lookup.get("b")
   print(search2)
+  print("Get c:")
   search3 = lookup.get("c")
   print(search3)
   
+  print("Deleting a then looking up a:")
   # delete test
   lookup.delete("a")
   print(lookup.get("a"))
@@ -347,6 +352,7 @@ Populate your structures with at least 10 sample animals.
 Demonstrate insertion, deletion, periodic care-level increases, and efficient retrieval of animals based on facility availability.
 '''
 def main2():
+  print("Starting main2: \n")
   a1 = Animal('Bob', 'Tiger', 1)
   a2 = Animal('Jane', 'Lion', -1)
   a3 = Animal('John', 'Weasel', 3)

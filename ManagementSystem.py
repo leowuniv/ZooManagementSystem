@@ -313,40 +313,107 @@ class CareFacility(CareManagement):
       self.removeAnimal(animal)
       yield animal
 
-if __name__ == "__main__":
-  test1 = Animal('Bob', 'Tiger', 1)
-  test2 = Animal('Jane', 'Lion', -1)
-  test3 = Animal('John', 'Weasel', 3)
-  test4 = Animal('Jill', 'Mink', 11)
-  test5 = Animal('Jack', 'Ermine', 6)
-  test6 = Animal('Jean', 'Tanuki', 11)
-  management = BinarySearchTree('Wasd')
-  management.insert(test1['name'])
-  management.insert(test2['name'])
-  management.insert('a')
-  management.insert('g')
-  management.insert('d')
-  management.insert('f')
-  management.insert('c')
-  management.insert('e')
-  management.insert('b')
-  for data in management.inorder():
-    print(data)
-  management.delete(test1['name'])
-  management.delete('Wasd')
-  for data in management.inorder():
-    print(data)
+# Testing here (part 1)
+def main1():
+  lookup = HashTable()
+  t1 = Animal("a", "Lion", 6)
+  t2 = Animal("b", "Penguin", 2)
+  t3 = Animal("c", "Elephant", 8)
+  t4 = Animal("d", "Eagle", 10)
+  t5 = Animal("e", "Ants", 1)
+  
+  # add and search testing
+  lookup.insert(t1.name, t1)
+  lookup.insert(t2.name, t2)
+  lookup.insert(t3.name, t3)
+  lookup.insert(t4.name, t4)
+  lookup.insert(t5.name, t5)
+  search1 = lookup.get("a")
+  print(search1)
+  search2 = lookup.get("b")
+  print(search2)
+  search3 = lookup.get("c")
+  print(search3)
+  
+  # delete test
+  lookup.delete("a")
+  print(lookup.get("a"))
+  
+'''
+Testing:
 
-  testTable =  HashTable()
-  testTable[test1['name']] = test1
-  testTable[test2['name']] = test2
-  print(testTable)
-  testManagement = CareManagement()
-  testManagement.insert(test1)
-  testManagement.insert(test2)
-  testManagement.insert(test3)
-  testManagement.insert(test4)
-  testManagement.insert(test5)
-  testManagement.insert(test6)
-  print(testManagement)
-  print(testManagement.getAtLevel(1))
+Populate your structures with at least 10 sample animals.
+
+Demonstrate insertion, deletion, periodic care-level increases, and efficient retrieval of animals based on facility availability.
+'''
+def main2():
+  a1 = Animal('Bob', 'Tiger', 1)
+  a2 = Animal('Jane', 'Lion', -1)
+  a3 = Animal('John', 'Weasel', 3)
+  a4 = Animal('Jill', 'Mink', 11)
+  a5 = Animal('Jack', 'Ermine', 6)
+  a6 = Animal('Jean', 'Tanuki', 11)
+  # create 8 more animals "Populate your structures with at least 10 sample animals."
+  basic_care = CareFacility(1, 3)
+  advanced_care = CareFacility(4, 7)
+  intensive_care = CareFacility(8, 10)
+
+  # do stuff here
+  basic_care.intakeAnimal(a1)
+  basic_care.intakeAnimal(a2)
+  basic_care.intakeAnimal(a3)
+  basic_care.decreaseCareLevel()
+  print("Animals discharged from care:")
+  for animal in basic_care.dischargeAnimals():
+    print(animal)
+
+  a1.care = 1
+  a2.care = 2
+  basic_care.intakeAnimal(a1)
+  basic_care.intakeAnimal(a2)
+  basic_care.increaseCareLevel()
+  basic_care.increaseCareLevel()
+  print("Animals needing escalated care:")
+  for animal in basic_care.escalateAnimals():
+    print(animal)
+
+
+if __name__ == "__main__":
+  main1()
+  main2()
+  # test1 = Animal('Bob', 'Tiger', 1)
+  # test2 = Animal('Jane', 'Lion', -1)
+  # test3 = Animal('John', 'Weasel', 3)
+  # test4 = Animal('Jill', 'Mink', 11)
+  # test5 = Animal('Jack', 'Ermine', 6)
+  # test6 = Animal('Jean', 'Tanuki', 11)
+  # management = BinarySearchTree('Wasd')
+  # management.insert(test1['name'])
+  # management.insert(test2['name'])
+  # management.insert('a')
+  # management.insert('g')
+  # management.insert('d')
+  # management.insert('f')
+  # management.insert('c')
+  # management.insert('e')
+  # management.insert('b')
+  # for data in management.inorder():
+  #   print(data)
+  # management.delete(test1['name'])
+  # management.delete('Wasd')
+  # for data in management.inorder():
+  #   print(data)
+
+  # testTable =  HashTable()
+  # testTable[test1['name']] = test1
+  # testTable[test2['name']] = test2
+  # print(testTable)
+  # testManagement = CareManagement()
+  # testManagement.insert(test1)
+  # testManagement.insert(test2)
+  # testManagement.insert(test3)
+  # testManagement.insert(test4)
+  # testManagement.insert(test5)
+  # testManagement.insert(test6)
+  # print(testManagement)
+  # print(testManagement.getAtLevel(1))

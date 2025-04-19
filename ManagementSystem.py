@@ -1,312 +1,358 @@
-# import heapq
-# class Manage:
+from typing import Any, Generator
+#https://docs.python.org/3/library/typing.html
+
+class Animal:
+  def __init__(self, name: str, species:str, care:int) -> None:
+    self.name:str = name 
+    self.species:str = species 
+    # make sure care is between 1-10
+    care = 10 if care > 10 else care
+    care = 1 if care < 1 else care
+    self.care:int = care 
+
+  def __str__(self) -> str:
+    return f"{self.name}: ({self.species}), Care - {self.care}"
+
+  def __getitem__(self, key) -> str|int:
+    return getattr(self, key)
   
-# **CARE FACILITIES** cannot be used by multiple animals at the same time (can implement as boolean value) --> not a class some data structure
-
-# if animal in the facility then NOT AVAILABLE HAVE TO WAIT THE TURN (hash table and binary tree)
-
-# facility can exist free floating does NOT HAVE TO EXIST IN ANY DATA STRUCTURE
-
-'''
-Binary Search Tree
-'''
+  def __setitem__(self, key, value):
+    return setattr(self, key, value)
+  
+  def __eq__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care == value
+    return self.care == value.care
+  
+  def __ne__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care != value
+    return self.care != value.care
+  
+  def __lt__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care < value
+    return self.care < value.care
+  
+  def __gt__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care > value
+    return self.care > value.care
+  
+  def __le__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care <= value
+    return self.care <= value.care
+  
+  def __ge__(self, value: object|int) -> bool:
+    if type(value) is int:
+      return self.care >= value
+    return self.care >= value.care
 
 class Node:
-    def __init__(self, data):
-        self.data = data
-        self.left = None # Left Child
-        self.right = None # Right Child
+  def __init__(self, data):
+    self.data = data
+    self.left: Node|None = None
+    self.right: Node|None = None
 
 class BinarySearchTree:
-    def __init__(self):
-        self.root = None
+  def __init__(self, root: Any|None = None) -> None:
+    if (root is not None) and (type(root) is not Node):
+      root = Node(root)
+    self.root: Node|None = root
 
-    def search(self, current, target):
-        if current is None: # Check if current existsm it not then return False or None
-            return None
-        if target == current.data: # If current exists, checj target
-            return current
-        elif target < current.data:
-            return self.search(current.left, target) # search left if target < current
-        else:
-            return self.search(current.right, target) # search right subtree if target is greater than current
+  def search(self, target) -> Any|None:
+    return self._search(self.root, target)
 
-    def iterativeSearch(self, target):
-        current = self.root
-        while current != None:
-            if current.data == target:
-                return current
-            elif current.data > target:
-                current = current.left
-            else:
-                current = current.right
-        return None
+  def _search(self, current, target) -> Any|None:
+    # does the current exist, if not then return None
+    if current is None:
+      return None
     
-    def insert(self, current, data):
-        if current is None: # Make new node at this location if current is none
-            return Node(data)
-        elif data == current.data: # Check for duplicates; if none, navigate to appropriate subtree
-            print("No duplicates") 
-            return current
-        elif data < current.data: # Navgiate to appropriate subtree if not none
-            current.left = self.insert(current.left, data)
-        else:
-            current.right = self.insert(current.right, data)
-            # reutrn the current node to ensure that the subtrees remain linked
-        return current 
+    if target == current.data:
+      return current
+    elif target < current.data:
+      self._search(current.left, target)
+    else:
+      self._search(current.right, target)
+
+  def insert(self, data) -> None:
+    # if root was not initialized with a value, handle here
+    if self.root is None:
+      self.root = self._insert(self.root, data)
+      return 
+    return self._insert(self.root, data)
     
-    def delete(self, current, data):
-        if current is None: # Step 1: Search for node we are deleting
-            return None
-        elif data < current.data:
-            current.left = self.delete(current.left, data)
-        elif data > current.data:
-            current.right = self.delete(current.right, data)
-        else:
-            # Step 2: Node found; check the case
-            # Case 1: if node has no children, delete
-            if current.left is None and current.right is None:
-                return None
-            
-            # Case 2: if node has one child, point parent to that child
-            elif current.left is None:
-                return current.right
-            elif current.right is None:
-                return current.left
-            else: # Case 3: Node has two children
-                # Find the inorder successor, the smallest in the right subtree
-                successor = self.inorderSuc(current.right)
-                # Replace data with inorder successor's data
-                current.data = successor.data
-                # Recursively delete old inorder successor in its subtree
-                current.right = self.delete(current.right, successor.data)
+  def _insert(self, current, data) -> Any|None:
+    # base case: create node at this location if empty 
+    if current is None:
+      return Node(data)
+    # if not, navigate to correct subtree
+    elif data <= current.data:
+      current.left = self._insert(current.left, data)
+    elif data > current.data:
+      current.right = self._insert(current.right, data)
+    return current
+  
+  def delete(self, data) -> None:
+    if self.root:
+      self.root = self._delete(self.root, data)
 
-    def inorderSuc(self, node):
-        current = node
-        while current.left is not None:
-            current = current.left
-        return current
-
-    # Inorder traversal
-    def inorderTrav(self, node):
-      if node:
-        self.inorderTrav(node.left) # travel left if possible
-        print(node.current) # print the current data
-        self.inorderTrav(node.right) # travel right if possible
+  def _delete(self, current, data) -> Node|None:
+    # base case
+    if current is None:
+        return 
+    
+    # If key to be searched is in a subtree
+    elif data < current.data:
+        current.left = self._delete(current.left, data)
+    elif data > current.data:
+        current.right = self._delete(current.right, data)
         
-    # Preorder traversal
-    def preorderTrav(self, node)
-      if node:
-        print(node.data) # print current data
-        self.preorderTrav(node.left) # travel left if possible
-        self.preorderTrav(node.right) # travel right if possible
+    else:
+      # Cases when root has 0 children or 
+      # only right child
+      if current.left is None:
+        return current.right
+      # When root has only left child
+      if current.right is None:
+        return current.left
 
-    # Postorder traversal
-    def postorderTrav(self, node)
-      if node:
-        self.postorderTrav(node.left) # travel left if possible
-        self.postorderTrav(node.right) # travel right if possible
-        print(node.data) # print current data
-# ===========================================
+      # When both children are present, find inorder successor (leaf of right subtree)
+      temp = current.right
+      while temp.left is not None:
+        temp = temp.left
+      current.data = temp.data
+      # after moving inorder successor here, delete old one
+      current.right = self._delete(current.right, temp.data)
+        
+    return current
+  
+  def inorder(self) -> Generator[Any]:
+    yield from self._inorder(self.root)
 
-'''
-Hash Table
-'''
+  def _inorder(self, current) -> Generator[Any]:
+    if current:
+      # instead of just printing, allow for them to yield recursively
+      yield from self._inorder(current.left)
+      yield current.data
+      yield from self._inorder(current.right)
+  
+  def postorder(self) -> Generator[Any]:
+    yield from self._postorder(self.root)
+
+  def _postorder(self, current) -> Generator[Any]:
+    if current:
+      # instead of just printing, allow for them to yield recursively
+      yield from self._postorder(current.left)
+      yield from self._postorder(current.right)
+      yield current.data
 
 class HashTable:
-    def __init__(self, size=10):
-        self.size = size 
-        self.table = [None] * self.size
-        self.deletedMarker = "DELETED"
-        
-    def hashFunction(self, key):
-        return abs(hash(key)) % self.size
-        
-    def insert(self, key, value): # Hash key to find index input location
-        index = self.hashFunction(key)
-        count = 0
-        
-        while count < self.size:
-            if self.table[index] is None or self.table[index] == self.deletedMarker or self.table[index][0] == key: # Check if the hashed index is free, is so store there
-                self.table[index] = (key, value)
-                return
-            index = (index + 1) % self.size # If not linear probe: keep checking next index for a spot (stop when found)
-            count += 1 
-        raise Exception("Hash Table is full") #alternatively: resize and grow the hashtable
-                
-    def get(self, key):
-        index = self.hashFunction(key) # Hash initial index
-        count = 0
-        
-        while count < self.size: # probe through table until we find our key/run out of elements
-            if self.table[index] is None: # Find none = key does not exist, exit early
-                return None
-            if self.table[index] != self.deletedMarker and self.table[index][0] == key: # Find key = return and exit early
-                return self.table[index][1]
-            index = (index + 1) % self.size # If another key is found or if we find a "DELETED" keep probing!
-            count += 1
+  def __init__(self, size=10):
+    self.size = size
+    self.table = [None] * self.size
+    self.deletedMarker = "DELETED"
+
+  def __getitem__(self, key):
+    return self.get(key)
+
+  def __setitem__(self, key, value):
+    return self.insert(key, value)
+
+  def __str__(self):
+    output = "{"
+    for item in self.table:
+      if item is not None and item != self.deletedMarker:
+        output += f" {item[0]}: {item[1]},"
+    
+    if len(output) > 1:
+      output = output[:-1]
+    output += " }"
+    return output
+
+  def hashFunction(self, key):
+    return abs(hash(key)) % self.size
+
+  def insert(self, key, value): 
+    index = self.hashFunction(key) # Hash key to find the index input location
+    count = 0
+
+    while count < self.size:
+      if self.table[index] is None or self.table[index] == self.deletedMarker or self.table[index][0] == key: # Check is hashed index is free
+        self.table[index] = (key, value) # Place it there if it is free
+        return
+      index = (index + 1) % self.size
+      count += 1
+    raise Exception("Hash Table is full")
+
+  def get(self, key):
+    index = self.hashFunction(key) # Hash initial index
+    count = 0
+
+    while count < self.size:
+      if self.table[index] is None:
         return None
-        
-    def delete(self, key):
-        index = self.hashFunction(key) # Hash initial index of the key
-        count = 0
-        
-        while count < self.size: # probe through table until we find our key/confirm it is not present
-            if self.table[index] is None: # Find none = key does not exist, exit early
-                return None
-            if self.table[index] != self.deletedMarker and self.table[index][0] == key: # If we find key then we replace key with deleted marker
-                poppedValue = self.table[index]
-                self.table[index] = self.deletedMarker
-                return poppedValue
-            index = (index + 1) % self.size # address linear probing (open addressing)
-            count += 1
-            #index = (index + count + count**2) % self.size
-        return None
+      if self.table[index] != self.deletedMarker and self.table[index][0] == key:
+        return self.table[index][1]
+      index = (index + 1) % self.size
+      count += 1
+    return None
   
-# ================================
+  def delete(self, key):
+    index = self.hashFunction(key) # Hash to the initial index of the key
+    count = 0 
 
-'''
-Hash Table Linked List
-'''
-'''
-class Node:
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
-        self.next = None
-            
-class HashTableLL:
-    def __init_(self, size=10):
-        self.size = size 
-        self.table = [None] * self.size
-        
-    def hashFunction(self, key):
-        return abs(hash(key)) % self.size
-        
-    def insert(self, key, value): 
-        index = self.hashFunction(key)
-        head = self.table[index]
-        if head is None:
-            self.table[index] = Node(key, value)
-            return
-        
-        current = head
-        prev = None
-        while current:
-            if current.key == key:
-                current.value = value
-                return
-            prev = current
-            current = current.next
-            
-        newNode = Node(key, value)
-        prev.next = newNode
-        
-    def get(self, key):
-        index = self.hashFunction(key)
-        head = self.table[index]
-        current = head
-        while current:
-            if current.key == key:
-                return current.value
-            current = current.next
+    while count < self.size: 
+      if self.table[index] is None:
         return None
+      if self.table[index] != self.deletedMarker and self.table[index][0] == key:
+        poppedValue = self.table[index]
+        self.table[index] = self.deletedMarker
+        return poppedValue
+      index = (index + 1) % self.size
+      count += 1
+    return None
+
+class CareManagement:
+  def __init__(self) -> None:
+    self.animals = BinarySearchTree()
+
+  def __str__(self) -> str:
+    output = "Inorder:\n"
+    for animal in self.animals.inorder():
+      output += str(animal) + " -> "
+    if len(output) > 10:
+      return output[:-4]
+    return output + " None"
+
+  def insert(self, animal: Animal):
+    if type(animal) is Animal:
+      return self.animals.insert(animal)
+    print(f"Cannot insert: not an animal ({animal})")
+
+  def increaseCareLevel(self):
+    for animal in self.animals.inorder():
+      animal.care += 1
+
+  def decreaseCareLevel(self):
+    for animal in self.animals.inorder():
+      animal.care -= 1
+
+  def getAtLevel(self, care: int) -> Generator[None, Animal]:
+    current = self.animals.search(care) 
+    if not current:
+      yield None
+    
+    for animal in self.animals._inorder(current):
+      if animal.care != care:
+        break
+      yield animal
+
+  def removeAnimal(self, animal:Animal) -> None:
+    # redefine delete so we can make sure we delete the correct object since we are now doing comparisons with care level by default
+    if self.animals.root:
+      self.animals.root = self._removeAnimal(self.animals.root, animal)
+
+  def _removeAnimal(self, current, animal):
+    """ Specfically compare by name in order to remove animal"""
+    if current is None:
+        return 
+    
+    if current.data['name'] == animal['name']:
+      # Cases when root has 0 children or right
+      if current.left is None:
+        return current.right
+      # When root has only left child
+      if current.right is None:
+        return current.left
+
+      # When both children are present, find inorder successor (leaf of right subtree)
+      temp = current.right
+      while temp.left is not None:
+        temp = temp.left
+      current.data = temp.data
+      # after moving inorder successor here, delete old one
+      current.right = self._removeAnimal(current.right, temp.data)
+    
+    elif animal <= current.data:
+        current.left = self._removeAnimal(current.left, animal)
+    elif animal > current.data:
+        current.right = self._removeAnimal(current.right, animal)
         
-    def delete(self, key):
-        index = self.hashFunction(key)
-        head = self.table[index]
-        current = head
-        prev = None
-        while current: 
-            if current.key == key:
-                if prev:
-                    prev.next = current.next
-                else:
-                    self.table[index] = current.next
-                return current.value
-            prev = current
-            current = current.next
+    return current
+  
+class CareFacility(CareManagement):
+  def __init__(self, minCare:int, maxCare:int) -> None:
+    super().__init__()
+    self.MIN_CARE = minCare
+    self.MAX_CARE = maxCare
+
+  def intakeAnimal(self, animal:Animal) -> bool:
+    if self.MIN_CARE <= animal.care <= self.MAX_CARE:
+      self.animals.insert(animal)
+      return True
+    return False
+
+  def dischargeAnimals(self) -> Generator[None, Animal]:
+    """ Pop animals below minimum care level to be handled elsewhere."""
+    for animal in self.animals.inorder():
+      if animal.care >= self.MIN_CARE:
         return None
-'''
-# ===========================================================
-
-'''
-Part 1: Hash Table (Animal Lookup)
-
-Stores animals by unique names
-
-Include:
-- Insertion
-- Deletion
-- Searching by name
-'''
-
-# Name (string, unique identifier)
-# Species (e.g., lion, penguin, elephant, etc.)
-# Care Level (integer, initially set from 1-10)
-
-class animalLookup:
-    def __init__(self, name, species, careLevel):
-        self.name = name
-        self.species = species
-        self.careLevel = careLevel
-
-    def __str__(self):
-        return f"Name: {self.name}, Species: {self.species}, Care Level: {self.careLevel}"
-
-# ===========================================================
-
-'''
-Part 2: Binary Search Tree (Care Priority Management)
-
-Ensure that animals are with greater values are handles first.
-Ex. 10 > 8, animals with a 10 priority care will have priority in the intensive care before a level 8 animal.
-'''
-
-'''
-Care Facilities:
-Basic Care: Can handle animals with care levels 1-3.
-
-Advanced: Handles animals with care levels 4-7.
-
-Intensive: Handles animals with care levels 8-10.
-'''
-
-# Each node will store:
-# Care Level (key)
-# List of animals sharing the same care level
-
-# Important Implementation: Animals' care levels increase over time if they are not attended to, simulating the urgency of care.
-
-class Manage:
-
-# ===========================================================
+      # if current animal is less than min care level, pop inorder until element is >= min care
+      self.removeAnimal(animal)
+      yield animal
+      
+  def escalateAnimals(self) -> Generator[None, Animal]:
+    """For any animals that have too high of a care level for this facility, pop them from tree to be used elsewhere"""
+    # traverse backwards with postorder
+    for animal in self.animals.postorder():
+      if animal.care <= self.MAX_CARE:
+        continue
+      # if current animal is less than min care level, pop postorder until element is >= min care
+      self.removeAnimal(animal)
+      yield animal
 
 # Testing here (part 1)
 def main1():
-    lookup = HashTable()
-    t1 = animalLookup("a", "Lion", 6)
-    t2 = animalLookup("b", "Penguin", 2)
-    t3 = animalLookup("c", "Elephant", 8)
-    t4 = animalLookup("d", "Eagle", 10)
-    t5 = animalLookup("e", "Ants", 1)
-    
-    # add and search testing
-    lookup.insert(t1.name, t1)
-    lookup.insert(t2.name, t2)
-    lookup.insert(t3.name, t3)
-    lookup.insert(t4.name, t4)
-    lookup.insert(t5.name, t5)
-    search1 = lookup.get("a")
-    print(search1)
-    search2 = lookup.get("b")
-    print(search2)
-    search3 = lookup.get("c")
-    print(search3)
-    
-    # delete test
-    lookup.delete("a")
-    print(lookup.get("a"))
+  print("Starting main1:\n")
+  lookup = HashTable()
+  t1 = Animal("a", "Lion", 6)
+  t2 = Animal("b", "Penguin", 2)
+  t3 = Animal("c", "Elephant", 8)
+  t4 = Animal("d", "Eagle", 10)
+  t5 = Animal("e", "Ants", 1)
+  t6 = Animal("f", "Panther", 3)
+  t7 = Animal("g", "Fox", 4)
+  t8 = Animal("h", "Salmon", 5)
+  t9 = Animal("i", "Emu", 7)
+  t10 = Animal("j", "Crab", 9)
+  
+  # add and search testing
+  lookup.insert(t1.name, t1)
+  lookup.insert(t2.name, t2)
+  lookup.insert(t3.name, t3)
+  lookup.insert(t4.name, t4)
+  lookup.insert(t5.name, t5)
+  lookup.insert(t6.name, t6)
+  lookup.insert(t7.name, t7)
+  lookup.insert(t8.name, t8)
+  lookup.insert(t9.name, t9)
+  lookup.insert(t10.name, t10)
+  print("Get a:")
+  search1 = lookup.get("a")
+  print(search1)
+  print("Get b:")
+  search2 = lookup.get("b")
+  print(search2)
+  print("Get c:")
+  search3 = lookup.get("c")
+  print(search3)
+  
+  print("Deleting a then looking up a:")
+  # delete test
+  lookup.delete("a")
+  print(lookup.get("a"))
   
 '''
 Testing:
@@ -316,7 +362,87 @@ Populate your structures with at least 10 sample animals.
 Demonstrate insertion, deletion, periodic care-level increases, and efficient retrieval of animals based on facility availability.
 '''
 def main2():
-  
+  print("Starting main2: \n")
+  a1 = Animal('Bob', 'Tiger', 1)
+  a2 = Animal('Jane', 'Lion', -1)
+  a3 = Animal('John', 'Weasel', 3)
+  a4 = Animal('Jill', 'Mink', 11)
+  a5 = Animal('Jack', 'Ermine', 6)
+  a6 = Animal('Jean', 'Tanuki', 9)
+  a7 = Animal('Jacque', 'Tasmanian Devil', 7)
+  a8 = Animal('Janette', 'Hamster', 2)
+  a9 = Animal('Jacob', 'Ginea Pig', 4)
+  a10 = Animal('Jess', 'Tanuki', 5)
+  # create 8 more animals "Populate your structures with at least 10 sample animals."
+  basic_care = CareFacility(1, 3)
+  advanced_care = CareFacility(4, 7)
+  intensive_care = CareFacility(8, 10)
+
+  # do stuff here
+  basic_care.intakeAnimal(a1)
+  basic_care.intakeAnimal(a2)
+  basic_care.intakeAnimal(a3)
+  basic_care.decreaseCareLevel()
+  print("Animals discharged from care:")
+  for animal in basic_care.dischargeAnimals():
+    print(animal)
+
+  a1.care = 1
+  a2.care = 2
+  basic_care.intakeAnimal(a1)
+  basic_care.intakeAnimal(a2)
+  basic_care.increaseCareLevel()
+  basic_care.increaseCareLevel()
+  print("Animals needing escalated care:")
+  for animal in basic_care.escalateAnimals():
+    advanced_care.intakeAnimal(animal)
+  print(advanced_care)
+  intensive_care.intakeAnimal(a4)
+  intensive_care.intakeAnimal(a5)
+  intensive_care.intakeAnimal(a6)
+  intensive_care.intakeAnimal(a7)
+  intensive_care.intakeAnimal(a8)
+  intensive_care.intakeAnimal(a9)
+  intensive_care.intakeAnimal(a10)
+  print(intensive_care)
+
+
 if __name__ == "__main__":
-  main1() # part 1
-  main2() # part 2
+  main1()
+  main2()
+  # test1 = Animal('Bob', 'Tiger', 1)
+  # test2 = Animal('Jane', 'Lion', -1)
+  # test3 = Animal('John', 'Weasel', 3)
+  # test4 = Animal('Jill', 'Mink', 11)
+  # test5 = Animal('Jack', 'Ermine', 6)
+  # test6 = Animal('Jean', 'Tanuki', 11)
+  # management = BinarySearchTree('Wasd')
+  # management.insert(test1['name'])
+  # management.insert(test2['name'])
+  # management.insert('a')
+  # management.insert('g')
+  # management.insert('d')
+  # management.insert('f')
+  # management.insert('c')
+  # management.insert('e')
+  # management.insert('b')
+  # for data in management.inorder():
+  #   print(data)
+  # management.delete(test1['name'])
+  # management.delete('Wasd')
+  # for data in management.inorder():
+  #   print(data)
+
+  # testTable =  HashTable()
+  # testTable[test1['name']] = test1
+  # testTable[test2['name']] = test2
+  # print(testTable)
+  # testManagement = CareManagement()
+  # testManagement.insert(test1)
+  # testManagement.insert(test2)
+  # testManagement.insert(test3)
+  # testManagement.insert(test4)
+  # testManagement.insert(test5)
+  # testManagement.insert(test6)
+  # print(testManagement)
+  # print(testManagement.getAtLevel(1))
